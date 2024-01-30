@@ -1,5 +1,7 @@
 package BinaryTreeNew.SegmentTrees;
 
+import java.util.Objects;
+
 public class SegmentTree {
 
     private Node root;
@@ -7,6 +9,26 @@ public class SegmentTree {
 
     public SegmentTree(int[] arr) {
         this.root = constructTree(arr, 0, arr.length - 1);
+    }
+
+    public void display() {
+        display(root);
+    }
+
+    private void display(Node node) {
+        String str = "";
+        if (Objects.nonNull(node.left)) {
+            str += "Interval[" + node.left.startInterval + "-" + node.left.endInterval + "] and data is " + node.left.data + " -> ";
+        } else str = "No Left Child";
+        //For Current Node
+        str += "Interval[" + node.left.startInterval + "-" + node.left.endInterval + "] and data is " + node.left.data + " -> ";
+
+        if (Objects.nonNull(node.right)) {
+            str += "Interval[" + node.right.startInterval + "-" + node.right.endInterval + "] and data is " + node.right.data + " -> ";
+        }
+        System.out.println(str);
+        if (Objects.nonNull(node.left)) display(node.left);
+        if (Objects.nonNull(node.right)) display(node.right);
     }
 
     private Node constructTree(int[] arr, int start, int end) {
@@ -21,6 +43,39 @@ public class SegmentTree {
         node.right = constructTree(arr, mid + 1, end);
         node.data = node.left.data + node.right.data;
         return node;
+    }
+
+    //    qsi -> Query Start Index
+//    qei -> Query End Index
+    public int query(int qsi, int qei) {
+        return this.query(this.root, qsi, qei);
+    }
+
+    private int query(Node node, int qsi, int qei) {
+        if (node.startInterval >= qsi && node.endInterval <= qei) {
+            //node is lying inside query -> we will take all the item inside it
+            return node.data;
+        } else if (node.startInterval > qei || node.endInterval < qsi) {
+            return 0;
+        }
+//        Reach till the correct node and get the data by recursion
+        return query(node.left, qsi, qei) + this.query(node.right, qsi, qei);
+    }
+
+    public void update(int index,int value){
+        this.root.data =  update(index,value,this.root);
+    }
+    private int update(int index, int value, Node node) {
+        if (index >= node.startInterval && index <= node.endInterval) {
+            if(index == node.startInterval && index == node.endInterval){
+                node.data = value;
+            }
+            int leftAns = update(index,value,node.left);
+            int rightAns = update(index,value,node.right);
+            node.data = leftAns + rightAns;
+            return node.data;
+        }
+        return node.data;
     }
 
     private class Node {
