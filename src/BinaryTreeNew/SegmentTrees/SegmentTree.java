@@ -21,12 +21,12 @@ public class SegmentTree {
             str += "Interval[" + node.left.startInterval + "-" + node.left.endInterval + "] and data is " + node.left.data + " -> ";
         } else str = "No Left Child";
         //For Current Node
-        str += "Interval[" + node.left.startInterval + "-" + node.left.endInterval + "] and data is " + node.left.data + " -> ";
+        str += "Interval[" + node.startInterval + "-" + node.endInterval + "] and data is " + node.data + " <- ";
 
         if (Objects.nonNull(node.right)) {
-            str += "Interval[" + node.right.startInterval + "-" + node.right.endInterval + "] and data is " + node.right.data + " -> ";
+            str += "Interval[" + node.right.startInterval + "-" + node.right.endInterval + "] and data is " + node.right.data + " ";
         }
-        System.out.println(str);
+        System.out.println(str + "]\n");
         if (Objects.nonNull(node.left)) display(node.left);
         if (Objects.nonNull(node.right)) display(node.right);
     }
@@ -46,7 +46,7 @@ public class SegmentTree {
     }
 
     //    qsi -> Query Start Index
-//    qei -> Query End Index
+    //    qei -> Query End Index
     public int query(int qsi, int qei) {
         return this.query(this.root, qsi, qei);
     }
@@ -62,16 +62,18 @@ public class SegmentTree {
         return query(node.left, qsi, qei) + this.query(node.right, qsi, qei);
     }
 
-    public void update(int index,int value){
-        this.root.data =  update(index,value,this.root);
+    public void update(int index, int value) {
+        this.root.data = update(index, value, this.root);
     }
+
     private int update(int index, int value, Node node) {
+        if (node == null) return 0;
         if (index >= node.startInterval && index <= node.endInterval) {
-            if(index == node.startInterval && index == node.endInterval){
+            if (index == node.startInterval && index == node.endInterval) {
                 node.data = value;
             }
-            int leftAns = update(index,value,node.left);
-            int rightAns = update(index,value,node.right);
+            int leftAns = update(index, value, node.left);
+            int rightAns = update(index, value, node.right);
             node.data = leftAns + rightAns;
             return node.data;
         }
@@ -110,5 +112,12 @@ public class SegmentTree {
     public static void main(String[] args) {
         int[] arr = {3, 8, 6, 7, -2, -8, 4, 9};
         SegmentTree segmentTree = new SegmentTree(arr);
+//        segmentTree.display();
+        System.out.println("====================================================");
+//        int val = segmentTree.query(1, 6);
+//        System.out.println(val);
+        segmentTree.update(3, 10);
+        System.out.println(segmentTree.query(3, 3));
+        segmentTree.display();
     }
 }
