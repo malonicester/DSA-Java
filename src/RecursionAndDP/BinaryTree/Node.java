@@ -1,9 +1,9 @@
 package RecursionAndDP.BinaryTree;
 
 public class Node {
-    Node left;
-    Node right;
-    int val;
+    public Node left;
+    public Node right;
+    public int val;
 
     public Node() {
     }
