@@ -33,7 +33,6 @@ public class HeapSort {
             swap(arr, largest, index);
             heapify(arr, largest, n);
         }
-        Math.log(23);
     }
 
     public static void swap(int[] arr, int i, int j) {

@@ -1,0 +1,19 @@
+Creational design pattern
+Solves the problem for complex constructors and telescoped constructors
+Helps in immutable class
+Less need for exposing setters
+
+URLBuilder
+https://localhost:8080/products?price=400
+----    --------  ----  ------   ------
+protocol  hostname port path-param query-param
+
+Pros:-
+    1.Good way to handle complexity
+    2.Easy to implement
+    3.can be refracted into
+Cons:-
+    1.Class instance returned is immutable
+    2.Use of inner static class
+    3.Sometimes number of lines of code can be huge
+    4.Have to think of end to end chain
