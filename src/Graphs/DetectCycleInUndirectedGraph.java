@@ -20,14 +20,14 @@ public class DetectCycleInUndirectedGraph {
         Queue<Pair> queue = new LinkedList<>();
         queue.add(new Pair(src, -1));
         while (!queue.isEmpty()) {
-            int node = queue.peek().a;
-            int parent = queue.peek().b;
+            int node = queue.peek().first;
+            int parent = queue.peek().second;
             queue.remove();
             for (Integer elem : adjList.get(node)) {
                 if (!visited[elem]) {
                     visited[elem] = true;
                     queue.add(new Pair(elem, node));
-                } else if (parent != node) {
+                } else if (parent != elem) {
                     return true;
                 }
             }
@@ -56,12 +56,3 @@ public class DetectCycleInUndirectedGraph {
     }
 }
 
-class Pair {
-    int a;
-    int b;
-
-    public Pair(int a, int b) {
-        this.a = a;
-        this.b = b;
-    }
-}
